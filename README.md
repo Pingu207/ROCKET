@@ -34,15 +34,15 @@ Simulated the rocket's altitude, velocity, and acceleration profile:
 - [x] BMP280 wired (I2C)
 - [x] Pyro firing (parachute ejection) circuit designed
 - [x] Flight simulation (altitude/velocity/acceleration, apogee prediction)
-- [ ] Servo wiring for TVC actuation
-- [ ] GPS integration into schematic
+- [x] Servo wiring for TVC actuation
+- [x] GPS integration into schematic
 - [x] Finish full PCB schematic
 - [ ] PCB fabrication
-- [ ] Static fire / ground testing
+- [ ] Static fire / ground testing  
 - [ ] First test flight
 
 ## Devlog
 Full build log with photos and hours logged: 
 [Stardance project page](https://stardance.hackclub.com/projects/45265)
 
-## License
+
