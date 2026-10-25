@@ -13,4 +13,4 @@ An ESP32 reads an ICM-42688 IMU and a BMP280 barometer. It detects launch, track
 The logic, servos and pyros each run from their own battery, so a servo stall or a pyro firing can't brown out the computer. The board is programmed over USB-C.
 
 ## Why I made it
-[I decided to design a PCB for this project in order to get experience with designing a more complex PCB with multiple subsystems, learn about embedded control, and fly a rocket without having to buy a COTS flight computer]
+I decided to design a PCB for this project in order to get experience with designing a more complex PCB with multiple subsystems, learn about embedded control, and fly a rocket without having to buy a COTS flight computer
