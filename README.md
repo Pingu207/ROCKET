@@ -46,21 +46,27 @@ Full build log with photos and hours logged:
 [Stardance project page](https://stardance.hackclub.com/projects/45265)
 
 <img width="922" height="546" alt="image" src="https://github.com/user-attachments/assets/6ae20f56-4b06-4eb5-b0a6-5ce257dd808a" /> 
+
 (The mount inside the rocket to hold the PCB on impact)
 
 <img width="153" height="746" alt="image" src="https://github.com/user-attachments/assets/1362f015-59ad-42fb-94ed-234c260aa188" /> 
+
 (An exploded CAD design of all the components inside the rocket)
 
 <img width="751" height="705" alt="image" src="https://github.com/user-attachments/assets/b6a85c3a-939e-4bcb-807f-0522b052abbb" /> 
+
 (A fully CADded TVC mount with the mounting holes)
 
 <img width="922" height="717" alt="image" src="https://github.com/user-attachments/assets/76c9ccff-aa77-4eda-bde6-6050de283b03" /> 
+
 (The Front side of the 3d PCB CAD)
 
 <img width="662" height="488" alt="image" src="https://github.com/user-attachments/assets/6177592d-9560-479c-be68-e08d87e1b8d8" /> 
+
 (This is the 2D model of the PCB with all of the components)
 
 <img width="923" height="642" alt="image" src="https://github.com/user-attachments/assets/32294789-573a-4c18-b502-b12329c3bb5f" /> 
+
 (This is the schematic of the PCB with everything routed)
 
 
