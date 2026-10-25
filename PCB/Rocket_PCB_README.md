@@ -7,9 +7,9 @@ ESP32-based flight computer for model/high-power rockets, with thrust vector con
 | **MCU** | ESP32-WROOM-32 (antenna overhangs the top board edge) |
 | **Sensors** | ICM-42688-P 6-axis IMU (SPI), BMP280 barometer (I2C) |
 | **Storage** | microSD (SPI, push-push socket) |
-| **Actuation** | 2 TVC servo outputs with independent buck regulators; 2 opto-isolated pyro channels |
-| **Programming** | USB-C via CH340K USB-UART with auto-reset / auto-boot |
-| **Board** | 98.3 × 76.3 mm, 4 layers, all SMD on top side (single-side PCBA) |
+| **Actuation** | 2 TVC servo outputs with independent buck regulators; 2 optoisolated pyro channels |
+| **Programming** | USB-C via CH340K USB-UART conversion with auto-reset / auto-boot transistor circuit |
+| **Board** | 98.3 × 76.3 mm, 4 layers, all SMD on top side (for the single-side PCBA promotional cost tier) |
 | **Fab target** | JLCPCB (≤100 × 100 mm price tier) |
 
 ---
@@ -25,15 +25,13 @@ ESP32-based flight computer for model/high-power rockets, with thrust vector con
 
 Design rules (JLCPCB 4-layer): 0.2 mm default trace/space (0.09 mm minimum), vias 0.6 mm / 0.3 mm drill, ≥0.3 mm copper to board edge.
 
-Recommended trace widths for power nets: **1–1.5 mm** for `S1_PWR`, `S2_PWR`, the J4 input / servo VIN rail, `+7V4(PYRO)`, `BATT_GND` returns and `VBUS`.
-
 ---
 
 ## 2. Connectors
 
 | Ref | Type | Location | Function | Pinout |
 |---|---|---|---|---|
-| **J1** | USB-C receptacle | Right edge, top | Programming / serial console, 5 V input | USB 2.0 FS, CC pulled down (5.1 k) |
+| **J1** | USB-C receptacle | Right edge, top | Programming / serial console, 5 V input | USB 2.0 FS, One CC pulled down (5.1 k)(could only do from one side due to space constraints) |
 | **J2** | JST-PH 2.0 mm, 2-pin | Right edge | **Logic battery** (2S LiPo, 7.4 V nominal) | 1 = BATT+, 2 = GND |
 | **J3** | JST-PH 2.0 mm, 2-pin | Bottom edge | **Pyro battery** | 1 = PYRO BATT+, 2 = BATT_GND |
 | **J4** | JST-PH 2.0 mm, 2-pin | Left edge, bottom | **Servo battery** | 1 = SERVO BATT+, 2 = GND |
