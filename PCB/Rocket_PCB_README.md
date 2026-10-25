@@ -1,6 +1,6 @@
 # Rocket Flight Computer
 
-A custom flight computer for model rockets that steers the rocket during boost and deploys its parachutes on the way down.
+A custom flight computer for a TVC model rocket that steers the rocket during boost and deploys its parachutes on the way down.
 
 ## What it does
 - **Steers the rocket** with thrust vector control: two servos gimbal the motor to keep the rocket flying straight.
@@ -8,9 +8,9 @@ A custom flight computer for model rockets that steers the rocket during boost a
 - **Logs the flight** (acceleration, rotation, altitude, servo positions, battery voltages) to a microSD card.
 
 ## How it works
-An ESP32 reads an ICM-42688 IMU and a BMP280 barometer. It detects launch, tracks the rocket's orientation and drives the servos to correct any tilt. When the barometer shows the rocket has stopped climbing, it fires the drogue; the main fires lower on the way down. Each pyro channel is optocoupler-isolated and has continuity sensing, so the board beeps to confirm the e-matches are connected before launch.
+An ESP32 reads an ICM-42688 IMU and a BMP280 barometer. It detects launch, tracks the rocket's orientation and drives the servos to correct any tilt. When the barometer shows the rocket has stopped climbing, it fires the drogue; the main fires lower on the way down. Each pyro channel is optoisolated by an optocoupler to protect the ESP32 and has continuity sensing, so the board confirms the e-matches are connected before launch.
 
 The logic, servos and pyros each run from their own battery, so a servo stall or a pyro firing can't brown out the computer. The board is programmed over USB-C.
 
 ## Why I made it
-[Your reason here: e.g. to learn PCB design and embedded control, and to fly a TVC rocket without buying an off-the-shelf flight computer.]
+[I decided to design a PCB for this project in order to get experience with designing a more complex PCB with multiple subsystems, learn about embedded control, and fly a rocket without having to buy a COTS flight computer]
