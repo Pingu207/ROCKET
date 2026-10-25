@@ -45,5 +45,18 @@ Simulated the rocket's altitude, velocity, and acceleration profile:
 Full build log with photos and hours logged: 
 [Stardance project page](https://stardance.hackclub.com/projects/45265)
 
+<img width="922" height="546" alt="image" src="https://github.com/user-attachments/assets/6ae20f56-4b06-4eb5-b0a6-5ce257dd808a" />
+
+<img width="153" height="746" alt="image" src="https://github.com/user-attachments/assets/1362f015-59ad-42fb-94ed-234c260aa188" />
+
+<img width="927" height="590" alt="image" src="https://github.com/user-attachments/assets/6f2a561c-bab4-4e66-8160-0cbd0ba8d065" />
+
+<img width="751" height="705" alt="image" src="https://github.com/user-attachments/assets/b6a85c3a-939e-4bcb-807f-0522b052abbb" />
+
+<img width="922" height="717" alt="image" src="https://github.com/user-attachments/assets/76c9ccff-aa77-4eda-bde6-6050de283b03" />
+
+<img width="662" height="488" alt="image" src="https://github.com/user-attachments/assets/6177592d-9560-479c-be68-e08d87e1b8d8" />
+
+<img width="923" height="642" alt="image" src="https://github.com/user-attachments/assets/32294789-573a-4c18-b502-b12329c3bb5f" />
 
 
