@@ -14,11 +14,18 @@ The logic, servos and pyros each run from their own battery, so a servo stall or
 
 ## Computer Module Subsystem
 <img width="452" height="356" alt="image" src="https://github.com/user-attachments/assets/0567e726-d5c2-4fbe-b5c0-68e1d3ce4786" />
-Contains decoupling capacitors for the ESP power pins, RC decoupling for sensing pins, 2 SPI and an I2C communication circuit, 2 switches for RESET/BOOT on the ESP, and a buzzer. The ESP32 is acting as the 'brain' of this device.
+
+Contains decoupling capacitors for the ESP power pins, RC decoupling for sensing pins, 2 SPI and an I2C communication circuit, 2 switches for RESET/BOOT on the ESP, and a buzzer. The ESP32 used here is acting as the 'brain' of this device.
 
 ## USB Input and Conversion(USB-UART) Subsystem
 <img width="445" height="227" alt="image" src="https://github.com/user-attachments/assets/206f9ba8-55dc-47a7-9ec5-1eb3abca64a8" />
+
 Uses a 14 pin USB-C Receptacle for programming of the ESP32 over USB(Note: On the PCB, only one side of the receptacle footprint is routed correctly due to space constraints, so it will only work when the cable is plugged in one specific way, not both). Contains a USBLC6-2SC6 transient voltage suppression diode array, which is an application specific integrated circuit designed for the purpose of electrostatic discharge and surge protection, used here because of the risk of ESD/Surge coming in from the USBC receptacle. The USB-UART conversion is handled by the CH340K, an auto reset transistor circuit is also in place to make the ESP32 enter boot mode when data is transferred.
+
+## Barometer(BMP280) Subsystem
+<img width="322" height="167" alt="image" src="https://github.com/user-attachments/assets/d94b6c0b-8884-4121-bca9-b40823f66f48" />
+
+Uses the BMP280 as the barometer, contains 2 decoupling caps for the power pins and a pull up resistor for the SCL line. Wired for I2C communication with the ESP32. Since SDO is tied to GND and CSB is pulled high to +3V3, the BMP280 will be set to the I2C adress 0x76.
 
 ## Why I made it
 I decided to design a PCB for this project in order to get experience with designing a more complex PCB with multiple subsystems, learn about embedded control, and fly a rocket without having to buy a COTS flight computer
