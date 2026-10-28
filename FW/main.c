@@ -52,4 +52,26 @@ void app_main(void)
     sd_init();
     servo_init();
     ESP_LOGI(TAG, "All subsystems initialized.");
+
+    while(1){
+        switch(current_state){
+            case PAD:
+                ESP_LOGI(TAG, "Current state: PAD");
+                break;
+            case BOOST:
+                ESP_LOGI(TAG, "Current state: BOOST");
+                break;
+            case COAST:
+                ESP_LOGI(TAG, "Current state: COAST");
+                break;
+            case DROGUE:
+                ESP_LOGI(TAG, "Current state: DROGUE");
+                break;
+            case MAIN:
+                ESP_LOGI(TAG, "Current state: MAIN");
+                break;
+            case LAND:
+                ESP_LOGI(TAG, "Current state: LAND");
+                break;
+    }
 }
