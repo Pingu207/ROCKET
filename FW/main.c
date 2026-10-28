@@ -36,3 +36,20 @@ typedef enum {
 static state_t current_state = PAD;
 
 static const char *TAG = "MAIN";
+
+// Function prototypes
+void pyro_init(void);
+void imu_init(void);
+void baro_init(void);
+void sd_init(void);
+void servo_init(void);
+
+void app_main(void)
+{
+    pyro_init(); // must be first(!!)
+    imu_init();
+    baro_init();
+    sd_init();
+    servo_init();
+    ESP_LOGI(TAG, "All subsystems initialized.");
+}
