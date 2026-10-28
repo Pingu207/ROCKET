@@ -24,3 +24,15 @@
 #define SD_MOSI_PIN 26
 #define SD_CLK_PIN 27
 #define SD_MISO_PIN 32
+
+typedef enum {
+    PAD,
+    BOOST,
+    COAST,
+    DROGUE,
+    MAIN,
+    LAND
+} state_t;
+static state_t current_state = PAD;
+
+static const char *TAG = "MAIN";
