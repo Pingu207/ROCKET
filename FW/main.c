@@ -48,16 +48,16 @@ void servo_init(void);
 void app_main(void)
 {
     // todo: implement these
-    pyro_init(){
+    void pyro_init(void){
         gpio_set_direction(PYRO_DROGUE_PIN, GPIO_MODE_OUTPUT);
         gpio_set_direction(PYRO_MAIN_PIN, GPIO_MODE_OUTPUT);
         gpio_set_level(PYRO_DROGUE_PIN, 0);
         gpio_set_level(PYRO_MAIN_PIN, 0);
     } // must be first(!!)
-    imu_init();
-    baro_init();
-    sd_init();
-    servo_init(){
+    void imu_init(void);
+    void baro_init(void);
+    void sd_init(void);
+    void servo_init(void){
         ledc_timer_config_t ledc_timer = {
             .speed_mode = LEDC_LOW_SPEED_MODE,
             .duty_resolution = LEDC_TIMER_14_BIT,
