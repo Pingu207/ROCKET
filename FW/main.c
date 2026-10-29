@@ -73,6 +73,7 @@ void app_main(void)
             .gpio_num = SERVO_PITCH_PIN,
             .speed_mode = LEDC_LOW_SPEED_MODE,
             .channel = LEDC_CHANNEL_0,
+            .timer_sel = LEDC_TIMER_0,
             .duty = 0,
             .hpoint = 0
         };
@@ -84,6 +85,7 @@ void app_main(void)
             .gpio_num = SERVO_YAW_PIN,
             .speed_mode = LEDC_LOW_SPEED_MODE,
             .channel = LEDC_CHANNEL_1,
+            .timer_sel = LEDC_TIMER_0,
             .duty = 0,
             .hpoint = 0
         };
@@ -91,7 +93,6 @@ void app_main(void)
         if(err_servo_channel_yaw != ESP_OK){
             ESP_LOGE(TAG, "Failed to configure LEDC channel for yaw servo: %d", err_servo_channel_yaw);
         }
-
     }
 
     ESP_LOGI(TAG, "All subsystems initialized.");
