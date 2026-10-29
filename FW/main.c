@@ -114,21 +114,27 @@ void pyro_init(void){
         switch(current_state){
             case PAD:
                 ESP_LOGI(TAG, "Current state: PAD");
+                // Detect launch, then arm pyros
                 break;
             case BOOST:
                 ESP_LOGI(TAG, "Current state: BOOST");
+                // run TVC: if(tilt){adjust servos}, detect burnout
                 break;
             case COAST:
                 ESP_LOGI(TAG, "Current state: COAST");
+                // detect apogee -> deploy drogue
                 break;
             case DROGUE:
                 ESP_LOGI(TAG, "Current state: DROGUE");
+                // if(altitude < threshold){deploy main parachute}
                 break;
             case MAIN:
                 ESP_LOGI(TAG, "Current state: MAIN");
+                // detect landing
                 break;
             case LAND:
                 ESP_LOGI(TAG, "Current state: LAND");
+                // start buzzing so I can find you
                 break;
         }
         vTaskDelay(pdMS_TO_TICKS(5)); //200hz
