@@ -26,6 +26,7 @@
 #define SD_CLK_PIN 27
 #define SD_MISO_PIN 32
 
+// stuff
 typedef enum {
     PAD,
     BOOST,
@@ -37,6 +38,7 @@ typedef enum {
 static state_t current_state = PAD;
 
 static const char *TAG = "MAIN";
+
 
 // Function prototypes
 void pyro_init(void);
