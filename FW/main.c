@@ -1,4 +1,5 @@
 // main.c (for rocket flight computer; ESP-IDF)
+#include "driver/ledc.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "driver/gpio.h"
@@ -46,7 +47,62 @@ void servo_init(void);
 
 void app_main(void)
 {
-    pyro_init(); // must be first(!!)
+    // todo: implement these
+    pyro_init(){
+        gpio_set_direction(PYRO_DROGUE_PIN, GPIO_MODE_OUTPUT);
+        gpio_set_direction(PYRO_MAIN_PIN, GPIO_MODE_OUTPUT);
+        gpio_set_level(PYRO_DROGUE_PIN, 0);
+        gpio_set_level(PYRO_MAIN_PIN, 0);
+    } // must be first(!!)
+    imu_init();
+    baro_init();
+    sd_init();
+    servo_init(){
+        ledc_timer_config_t ledc_timer = {
+            .speed_mode = LEDC_LOW_SPEED_MODE,
+            .duty_resolution = LEDC_TIMER_14_BIT,
+            .timer_num = LEDC_TIMER_0,
+            .freq_hz = 50,
+            .clk_cfg = LEDC_AUTO_CLK
+        };
+        esp_err_t err_servo_timer = ledc_timer_config(&ledc_timer);
+        if(err_servo_timer != ESP_OK){
+            ESP_LOGE(TAG, "Failed to configure LEDC timer: %d", err_servo_timer);
+        }
+        ledc_channel_config_t ledc_channel_pitch = {
+            .gpio_num = SERVO_PITCH_PIN,
+            .speed_mode = LEDC_LOW_SPEED_MODE,
+            .channel = LEDC_CHANNEL_0,
+            .duty = 0,
+            .hpoint = 0
+        };
+        esp_err_t err_servo_channel_pitch = ledc_channel_config(&ledc_channel_pitch);
+        if(err_servo_channel_pitch != ESP_OK){
+            ESP_LOGE(TAG, "Failed to configure LEDC channel for pitch servo: %d", err_servo_channel_pitch);
+        }
+        ledc_channel_config_t ledc_channel_yaw = {
+            .gpio_num = SERVO_YAW_PIN,
+            .speed_mode = LEDC_LOW_SPEED_MODE,
+            .channel = LEDC_CHANNEL_1,
+            .duty = 0,
+            .hpoint = 0
+        };
+        esp_err_t err_servo_channel_yaw = ledc_channel_config(&ledc_channel_yaw);
+        if(err_servo_channel_yaw != ESP_OK){
+            ESP_LOGE(TAG, "Failed to configure LEDC channel for yaw servo: %d", err_servo_channel_yaw);
+        }
+
+    }
+
+    ESP_LOGI(TAG, "All subsystems initialized.");
+}
+
+void pyro_init(void){
+    gpio_set_direction(PYRO_DROGUE_PIN, GPIO_MODE_OUTPUT);
+    gpio_set_direction(PYRO_MAIN_PIN, GPIO_MODE_OUTPUT);
+    gpio_set_level(PYRO_DROGUE_PIN, 0);
+    gpio_set_level(PYRO_MAIN_PIN, 0);
+}
     imu_init();
     baro_init();
     sd_init();
@@ -73,5 +129,7 @@ void app_main(void)
             case LAND:
                 ESP_LOGI(TAG, "Current state: LAND");
                 break;
+        }
+        vTaskDelay(pdMS_TO_TICKS(5)); //200hz
     }
 }
