@@ -63,11 +63,21 @@ void app_main(void)
             .sclk_io_num = SCLK_PIN,
             .quadwp_io_num = -1,
             .quadhd_io_num = -1,
-            .max_transfer_sz = 4096
+            .max_transfer_sz = 32
         };
-        esp_err_t err = spi_bus_initialize(SPI2_HOST, &buscfg, SPI_DMA_CH_AUTO);
-        if(err != ESP_OK){
-            ESP_LOGE(TAG, "Failed to initialize SPI bus: %d", err);
+        esp_err_t err_spi_bus = spi_bus_initialize(SPI2_HOST, &buscfg, SPI_DMA_CH_AUTO);
+        if(err_spi_bus != ESP_OK){
+            ESP_LOGE(TAG, "Failed to initialize SPI bus: %d", err_spi_bus);
+        }
+        spi_device_interface_config_t devcfg = {
+            .clock_speed_hz = 10 * 10 * 10 * 10 * 10 * 10 * 10,
+            .mode = 3,
+            .spics_io_num = CS_PIN,
+            .queue_size = 7
+        };
+        esp_err_t err_spi_device = spi_bus_add_device(SPI2_HOST, &devcfg, &spi_device);
+        if(err_spi_device != ESP_OK){
+            ESP_LOGE(TAG, "Failed to add SPI device: %d", err_spi_device);
         }
     };
     void baro_init(void);
