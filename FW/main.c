@@ -44,6 +44,7 @@ static spi_device_handle_t spi_device_handle;
 static i2c_device_handle_t i2c_device_handle;
 static const char *TAG = "MAIN";
 #define BARO_I2C_ADDRESS 0x76
+#define SD_MOUNT = "/sdcard"
 
 
 // Function prototypes
@@ -103,6 +104,14 @@ void baro_init(void){
     }
 }
 void sd_init(void){
+    esp_vfs_fat_sdmmc_mount_config_t spimountcfg = {
+        .format_if_mount_failed = true,
+        max_files = ,
+        .allocation_unit_size = 
+    };
+
+    ESP_LOGI(TAG, "Initializing SD Card");
+
     spi_bus_config_t spisdcfg{
         .mosi_io_num = SD_MOSI_PIN,
         .miso_io_num = SD_MISO_PIN,
@@ -112,12 +121,18 @@ void sd_init(void){
         .max_transfer_sz = 4000
     };
 
-    esp_err_t err_spi_bus = spi_bus_initialize(SPI2_HOST, &spisdcfg, SPI_DMA_CH_AUTO);
+    esp_err_t err_spi_bus = spi_bus_initialize(SPI2_HOST, &spisdcfg, SDSPI_DEFAULT_DMA_CHAN);
     if(err_spi_bus != ESP_OK){
         ESP_LOGE(TAG, "Failed to initialize SPI bus for SD card: %d", err_spi_bus);
+        return;
     }
 
-    esp_vfs_fat_
+    sdspi_device_config_t sdspicfg = SDSPI_DEVICE_CONFIG_DEFAULT();
+    sdspicfg.gpio_cs = SD_SPI_CS_PIN;
+    sdspicfg.host_id = SPI2_HOST;
+
+    sdmmc_host_t sdhost = SDSPI_HOST_DEFAULT();
+    esp_err_t err_sd_host = esp_vfs_fat_sdmmc_mount(SD_MOUNT, &s)
 
 }
 void servo_init(void){
