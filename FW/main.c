@@ -34,6 +34,7 @@
 // other defs
 #define BARO_I2C_ADDRESS 0x76
 #define SD_MOUNT "/sdcard"
+#define SERVO_CENTER_DUTY 1229
 
 // state enum
 typedef enum {
@@ -47,19 +48,12 @@ typedef enum {
 
 // static inits
 static state_t current_state = PAD;
-static spi_device_handle_t spi_device_handle;
-static i2c_device_handle_t i2c_device_handle;
-static spi_bus_config_t spi_bus_configs[2] = {imu_bus_config, sd_bus_config};
-static spi_device_interface_config_t imu_device_config;
-static i2c_device_config_t baro_device_config;
-static esp_vfs_fat_sdmmc_mount_config_t sd_mount_config;
-static sdspi_device_config_t sd_device_config;
-static sdmmc_host_t sd_sdmmc_host;
-static ledc_timer_config_t ledc_timer_config;
-static ledc_channel_config_t ledc_channel_configs[2] = {pitch_channel_config, yaw_channel_config};
+static spi_device_handle_t imu_handle;
+static i2c_master_bus_handle_t i2c_bus_handle;
+static i2c_master_dev_handle_t baro_handle;
+static sdmmc_card_t *sd_card;
 static const char *TAG = "MAIN";
 static esp_err_t err;
-
 
 // Function prototypes
 void pyro_init(void){
