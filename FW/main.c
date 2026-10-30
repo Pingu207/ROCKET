@@ -56,7 +56,20 @@ void app_main(void)
         gpio_set_level(PYRO_DROGUE_PIN, 0);
         gpio_set_level(PYRO_MAIN_PIN, 0);
     } // must be first(!!)
-    void imu_init(void);
+    void imu_init(void){
+        spi_bus_config_t buscfg = {
+            .miso_io_num = MISO_PIN,
+            .mosi_io_num = MOSI_PIN,
+            .sclk_io_num = SCLK_PIN,
+            .quadwp_io_num = -1,
+            .quadhd_io_num = -1,
+            .max_transfer_sz = 4096
+        };
+        esp_err_t err = spi_bus_initialize(SPI2_HOST, &buscfg, SPI_DMA_CH_AUTO);
+        if(err != ESP_OK){
+            ESP_LOGE(TAG, "Failed to initialize SPI bus: %d", err);
+        }
+    };
     void baro_init(void);
     void sd_init(void);
     void servo_init(void){
