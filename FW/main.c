@@ -44,7 +44,7 @@ static spi_device_handle_t spi_device_handle;
 static i2c_device_handle_t i2c_device_handle;
 static const char *TAG = "MAIN";
 #define BARO_I2C_ADDRESS 0x76
-#define SD_MOUNT = "/sdcard"
+#define SD_MOUNT "/sdcard"
 
 
 // Function prototypes
@@ -104,10 +104,10 @@ void baro_init(void){
     }
 }
 void sd_init(void){
-    esp_vfs_fat_sdmmc_mount_config_t spimountcfg = {
+    esp_vfs_fat_sdmmc_mount_config_t sdmountcfg = {
         .format_if_mount_failed = true,
-        max_files = ,
-        .allocation_unit_size = 
+        .max_files = 4,
+        .allocation_unit_size = 4096
     };
 
     ESP_LOGI(TAG, "Initializing SD Card");
@@ -132,8 +132,12 @@ void sd_init(void){
     sdspicfg.host_id = SPI2_HOST;
 
     sdmmc_host_t sdhost = SDSPI_HOST_DEFAULT();
-    esp_err_t err_sd_host = esp_vfs_fat_sdmmc_mount(SD_MOUNT, &s)
+    esp_err_t err_sd_host = esp_vfs_fat_sdmmc_mount(SD_MOUNT, &sdhost, &sdmountcfg, NULL);
 
+    if(err_sd_host != ESP_OK){
+        ESP_LOGE(TAG, "Failed to mount SD card: %d", err_sd_host);
+        return;
+    }
 }
 void servo_init(void){
     ledc_timer_config_t ledc_timer = {
