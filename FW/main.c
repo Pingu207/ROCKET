@@ -36,7 +36,8 @@ typedef enum {
     LAND
 } state_t;
 static state_t current_state = PAD;
-
+static spi_device_handle_t spi_device_handle;
+static i2c_device_handle_t i2c_device_handle;
 static const char *TAG = "MAIN";
 
 
@@ -57,7 +58,7 @@ void app_main(void)
         gpio_set_level(PYRO_MAIN_PIN, 0);
     } // must be first(!!)
     void imu_init(void){
-        spi_bus_config_t buscfg = {
+        spi_bus_config_t spicfg = {
             .miso_io_num = MISO_PIN,
             .mosi_io_num = MOSI_PIN,
             .sclk_io_num = SCLK_PIN,
@@ -65,23 +66,37 @@ void app_main(void)
             .quadhd_io_num = -1,
             .max_transfer_sz = 32
         };
-        esp_err_t err_spi_bus = spi_bus_initialize(SPI2_HOST, &buscfg, SPI_DMA_CH_AUTO);
+        esp_err_t err_spi_bus = spi_bus_initialize(SPI2_HOST, &spicfg, SPI_DMA_CH_AUTO);
         if(err_spi_bus != ESP_OK){
             ESP_LOGE(TAG, "Failed to initialize SPI bus: %d", err_spi_bus);
         }
-        spi_device_interface_config_t devcfg = {
+        spi_device_interface_config_t imucfg = {
             .clock_speed_hz = 10 * 10 * 10 * 10 * 10 * 10 * 10,
             .mode = 3,
             .spics_io_num = CS_PIN,
             .queue_size = 7
         };
-        esp_err_t err_spi_device = spi_bus_add_device(SPI2_HOST, &devcfg, &spi_device);
+        esp_err_t err_spi_device = spi_bus_add_device(SPI2_HOST, &imucfg, &spi_device_handle);
         if(err_spi_device != ESP_OK){
             ESP_LOGE(TAG, "Failed to add SPI device: %d", err_spi_device);
         }
-    };
-    void baro_init(void);
-    void sd_init(void);
+    }
+    void baro_init(void){
+        i2c_master_bus_config_t i2ccfg = {
+            .i2c_port = -1,
+            .sda_io_num = SDA_PIN,
+            .scl_io_num = SCL_PIN,
+            .clk_source = I2C_CLK_SRC_DEFAULT,
+            .glitch_time_cnt = 7,
+            .flags.enable_internal_pullup = false
+        };
+        esp_err_t err_i2c = i2c_new_master_bus(&i2ccfg, &i2c_device_handle);
+        if(err_i2c != ESP_OK){
+            ESP_LOGE(TAG, "Failed to initialize I2C bus: %d", err_i2c);
+        }
+        i2c_device_config_t barocfg = {};
+    }
+    void sd_init(void){}
     void servo_init(void){
         ledc_timer_config_t ledc_timer = {
             .speed_mode = LEDC_LOW_SPEED_MODE,
