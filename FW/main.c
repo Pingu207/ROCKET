@@ -42,6 +42,16 @@ typedef enum {
 static state_t current_state = PAD;
 static spi_device_handle_t spi_device_handle;
 static i2c_device_handle_t i2c_device_handle;
+static spi_bus_config_t spicfg;
+static spi_device_interface_config_t imucfg;
+static i2c_device_config_t barocfg;
+static esp_vfs_fat_sdmmc_mount_config_t sdmountcfg;
+static spi_bus_config_t spisdcfg;
+static sdspi_device_config_t sdspicfg;
+static sdmmc_host_t sdhost;
+static ledc_timer_config_t ledc_timer;
+static ledc_channel_config_t ledc_channel_pitch;
+static ledc_channel_config_t ledc_channel_yaw;
 static const char *TAG = "MAIN";
 #define BARO_I2C_ADDRESS 0x76
 #define SD_MOUNT "/sdcard"
@@ -57,7 +67,7 @@ void pyro_init(void){
 };
 
 void imu_init(void){
-    spi_bus_config_t spicfg = {
+    spicfg = {
         .miso_io_num = MISO_PIN,
         .mosi_io_num = MOSI_PIN,
         .sclk_io_num = SCLK_PIN,
@@ -70,7 +80,7 @@ void imu_init(void){
         ESP_LOGE(TAG, "Failed to initialize SPI bus: %d", err);
         return;
     }
-    spi_device_interface_config_t imucfg = {
+    imucfg = {
         .clock_speed_hz = 10 * 1000 * 1000,
         .mode = 3,
         .spics_io_num = CS_PIN,
@@ -83,7 +93,7 @@ void imu_init(void){
     }
 }
 void baro_init(void){
-    i2c_master_bus_config_t i2ccfg = {
+    i2ccfg = {
         .i2c_port = -1,
         .sda_io_num = SDA_PIN,
         .scl_io_num = SCL_PIN,
@@ -97,7 +107,7 @@ void baro_init(void){
         ESP_LOGE(TAG, "Failed to initialize I2C bus: %d", err);
         return;
     }
-    i2c_device_config_t barocfg = {
+    barocfg = {
         .dev_addr_length = I2C_ADDR_BIT_LEN_7,
         .device_address = BARO_I2C_ADDRESS,
         .scl_speed_hz = 400 * 1000
@@ -109,7 +119,7 @@ void baro_init(void){
     }
 }
 void sd_init(void){
-    esp_vfs_fat_sdmmc_mount_config_t sdmountcfg = {
+    sdmountcfg = {
         .format_if_mount_failed = true,
         .max_files = 4,
         .allocation_unit_size = 4096
@@ -117,7 +127,7 @@ void sd_init(void){
 
     ESP_LOGI(TAG, "Initializing SD Card");
 
-    spi_bus_config_t spisdcfg{
+    spisdcfg = {
         .mosi_io_num = SD_MOSI_PIN,
         .miso_io_num = SD_MISO_PIN,
         .sclk_io_num = SD_SCLK_PIN,
@@ -132,11 +142,11 @@ void sd_init(void){
         return;
     }
 
-    sdspi_device_config_t sdspicfg = SDSPI_DEVICE_CONFIG_DEFAULT();
+    sdspicfg = SDSPI_DEVICE_CONFIG_DEFAULT();
     sdspicfg.gpio_cs = SD_SPI_CS_PIN;
     sdspicfg.host_id = SPI2_HOST;
 
-    sdmmc_host_t sdhost = SDSPI_HOST_DEFAULT();
+    sdhost = SDSPI_HOST_DEFAULT();
 
     err = esp_vfs_fat_sdmmc_mount(SD_MOUNT, &sdhost, &sdmountcfg, NULL);
     if(err != ESP_OK){
@@ -145,7 +155,7 @@ void sd_init(void){
     }
 }
 void servo_init(void){
-    ledc_timer_config_t ledc_timer = {
+    ledc_timer = {
         .speed_mode = LEDC_LOW_SPEED_MODE,
         .duty_resolution = LEDC_TIMER_14_BIT,
         .timer_num = LEDC_TIMER_0,
@@ -159,7 +169,7 @@ void servo_init(void){
         return;
     }
 
-    ledc_channel_config_t ledc_channel_pitch = {
+    ledc_channel_pitch = {
         .gpio_num = SERVO_PITCH_PIN,
         .speed_mode = LEDC_LOW_SPEED_MODE,
         .channel = LEDC_CHANNEL_0,
@@ -174,7 +184,7 @@ void servo_init(void){
         return;
     }
 
-    ledc_channel_config_t ledc_channel_yaw = {
+    ledc_channel_yaw = {
         .gpio_num = SERVO_YAW_PIN,
         .speed_mode = LEDC_LOW_SPEED_MODE,
         .channel = LEDC_CHANNEL_1,
