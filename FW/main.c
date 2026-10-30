@@ -45,6 +45,7 @@ static i2c_device_handle_t i2c_device_handle;
 static const char *TAG = "MAIN";
 #define BARO_I2C_ADDRESS 0x76
 #define SD_MOUNT "/sdcard"
+esp_err_t err;
 
 
 // Function prototypes
@@ -64,9 +65,10 @@ void imu_init(void){
         .quadhd_io_num = -1,
         .max_transfer_sz = 32
     }
-     esp_err_t err_spi_bus = spi_bus_initialize(SPI2_HOST, &spicfg, SPI_DMA_CH_AUTO);
-     if(err_spi_bus != ESP_OK){
-        ESP_LOGE(TAG, "Failed to initialize SPI bus: %d", err_spi_bus);
+     err = spi_bus_initialize(SPI2_HOST, &spicfg, SPI_DMA_CH_AUTO);
+     if(err != ESP_OK){
+        ESP_LOGE(TAG, "Failed to initialize SPI bus: %d", err);
+        return;
     }
     spi_device_interface_config_t imucfg = {
         .clock_speed_hz = 10 * 1000 * 1000,
@@ -74,9 +76,10 @@ void imu_init(void){
         .spics_io_num = CS_PIN,
         .queue_size = 7
     }
-    esp_err_t err_spi_device = spi_bus_add_device(SPI2_HOST, &imucfg, &spi_device_handle);
-    if(err_spi_device != ESP_OK){
-        ESP_LOGE(TAG, "Failed to add SPI device: %d", err_spi_device);
+    err = spi_bus_add_device(SPI2_HOST, &imucfg, &spi_device_handle);
+    if(err != ESP_OK){
+        ESP_LOGE(TAG, "Failed to add SPI device: %d", err);
+        return;
     }
 }
 void baro_init(void){
@@ -89,18 +92,20 @@ void baro_init(void){
         .flags.enable_internal_pullup = false
     };
 
-    esp_err_t err_i2c_bus = i2c_new_master_bus(&i2ccfg, &i2c_device_handle);
-    if(err_i2c_bus != ESP_OK){
-        ESP_LOGE(TAG, "Failed to initialize I2C bus: %d", err_i2c_bus);
+    err = i2c_new_master_bus(&i2ccfg, &i2c_device_handle);
+    if(err != ESP_OK){
+        ESP_LOGE(TAG, "Failed to initialize I2C bus: %d", err);
+        return;
     }
     i2c_device_config_t barocfg = {
         .dev_addr_length = I2C_ADDR_BIT_LEN_7,
         .device_address = BARO_I2C_ADDRESS,
         .scl_speed_hz = 400 * 1000
     };
-    esp_err_t err_i2c_device = i2c_bus_device_create(i2c_device_handle, &barocfg);
-    if(err_i2c_device != ESP_OK){
-        ESP_LOGE(TAG, "Failed to add I2C device: 0x%02x, %d", BARO_I2C_ADDRESS, err_i2c_device);
+    err = i2c_bus_device_create(i2c_device_handle, &barocfg);
+    if(err != ESP_OK){
+        ESP_LOGE(TAG, "Failed to add I2C device: 0x%02x, %d", BARO_I2C_ADDRESS, err);
+        return;
     }
 }
 void sd_init(void){
@@ -121,9 +126,9 @@ void sd_init(void){
         .max_transfer_sz = 4000
     };
 
-    esp_err_t err_spi_bus = spi_bus_initialize(SPI2_HOST, &spisdcfg, SDSPI_DEFAULT_DMA_CHAN);
-    if(err_spi_bus != ESP_OK){
-        ESP_LOGE(TAG, "Failed to initialize SPI bus for SD card: %d", err_spi_bus);
+    err = spi_bus_initialize(SPI2_HOST, &spisdcfg, SDSPI_DEFAULT_DMA_CHAN);
+    if(err != ESP_OK){
+        ESP_LOGE(TAG, "Failed to initialize SPI bus for SD card: %d", err);
         return;
     }
 
@@ -132,10 +137,10 @@ void sd_init(void){
     sdspicfg.host_id = SPI2_HOST;
 
     sdmmc_host_t sdhost = SDSPI_HOST_DEFAULT();
-    esp_err_t err_sd_host = esp_vfs_fat_sdmmc_mount(SD_MOUNT, &sdhost, &sdmountcfg, NULL);
 
-    if(err_sd_host != ESP_OK){
-        ESP_LOGE(TAG, "Failed to mount SD card: %d", err_sd_host);
+    err = esp_vfs_fat_sdmmc_mount(SD_MOUNT, &sdhost, &sdmountcfg, NULL);
+    if(err != ESP_OK){
+        ESP_LOGE(TAG, "Failed to mount SD card: %d", err);
         return;
     }
 }
@@ -148,9 +153,10 @@ void servo_init(void){
         .clk_cfg = LEDC_AUTO_CLK
     };
 
-    esp_err_t err_servo_timer = ledc_timer_config(&ledc_timer);
-    if(err_servo_timer != ESP_OK){
-        ESP_LOGE(TAG, "Failed to configure LEDC timer: %d", err_servo_timer);
+    err = ledc_timer_config(&ledc_timer);
+    if(err != ESP_OK){
+        ESP_LOGE(TAG, "Failed to configure LEDC timer: %d", err);
+        return;
     }
 
     ledc_channel_config_t ledc_channel_pitch = {
@@ -162,9 +168,10 @@ void servo_init(void){
         .hpoint = 0
     };
 
-    esp_err_t err_servo_channel_pitch = ledc_channel_config(&ledc_channel_pitch);
-    if(err_servo_channel_pitch != ESP_OK){
-        ESP_LOGE(TAG, "Failed to configure LEDC channel for pitch servo: %d", err_servo_channel_pitch);
+    err = ledc_channel_config(&ledc_channel_pitch);
+    if(err != ESP_OK){
+        ESP_LOGE(TAG, "Failed to configure LEDC channel for pitch servo: %d", err);
+        return;
     }
 
     ledc_channel_config_t ledc_channel_yaw = {
@@ -176,9 +183,10 @@ void servo_init(void){
         .hpoint = 0
     };
 
-    esp_err_t err_servo_channel_yaw = ledc_channel_config(&ledc_channel_yaw);
-    if(err_servo_channel_yaw != ESP_OK){
-        ESP_LOGE(TAG, "Failed to configure LEDC channel for yaw servo: %d", err_servo_channel_yaw);
+    err = ledc_channel_config(&ledc_channel_yaw);
+    if(err != ESP_OK){
+        ESP_LOGE(TAG, "Failed to configure LEDC channel for yaw servo: %d", err);
+        return;
     }
 
 }
