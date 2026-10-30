@@ -55,12 +55,14 @@ static sdmmc_card_t *sd_card;
 static const char *TAG = "MAIN";
 static esp_err_t err;
 
-// Function prototypes
+// Subsystem inits
 void pyro_init(void){
-    gpio_set_direction(PYRO_DROGUE_PIN, GPIO_MODE_OUTPUT);
-    gpio_set_direction(PYRO_MAIN_PIN, GPIO_MODE_OUTPUT);
+    gpio_reset_pin(PYRO_DROGUE_PIN);
+    gpio_reset_pin(PYRO_MAIN_PIN);
     gpio_set_level(PYRO_DROGUE_PIN, 0);
     gpio_set_level(PYRO_MAIN_PIN, 0);
+    gpio_set_direction(PYRO_DROGUE_PIN, GPIO_MODE_OUTPUT);
+    gpio_set_direction(PYRO_MAIN_PIN, GPIO_MODE_OUTPUT);
 };
 
 void imu_init(void){
