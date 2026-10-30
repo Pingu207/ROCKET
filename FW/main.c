@@ -94,31 +94,32 @@ void imu_init(void){
 }
 
 void baro_init(void){
-    i2c_master_bus_config_t baro_device_config = {
+    i2c_master_bus_config_t baro_bus_config = {
         .i2c_port = -1,
         .sda_io_num = SDA_PIN,
         .scl_io_num = SCL_PIN,
         .clk_source = I2C_CLK_SRC_DEFAULT,
-        .glitch_time_cnt = 7,
-        .flags.enable_internal_pullup = false
+        .glitch_ignore_cnt = 7,
+        .flags.enable_internal_pullup = false   // do not set true(!!) board has external pullups
     };
-
-    err = i2c_new_master_bus(&baro_device_config, &i2c_device_handle);
+    err = i2c_new_master_bus(&baro_bus_config, &i2c_bus_handle);
     if(err != ESP_OK){
-        ESP_LOGE(TAG, "Failed to initialize I2C bus: %d", err);
+        ESP_LOGE(TAG, "Failed to initialize I2C bus: %s", esp_err_to_name(err));
         return;
     }
-    i2c_master_dev_config_t baro_device_config = {
+
+    i2c_device_config_t baro_device_config = {
         .dev_addr_length = I2C_ADDR_BIT_LEN_7,
         .device_address = BARO_I2C_ADDRESS,
         .scl_speed_hz = 400 * 1000
     };
-    err = i2c_bus_device_create(i2c_device_handle, &baro_device_config);
+    err = i2c_master_bus_add_device(i2c_bus_handle, &baro_device_config, &baro_handle);
     if(err != ESP_OK){
-        ESP_LOGE(TAG, "Failed to add I2C device: 0x%02x, %d", BARO_I2C_ADDRESS, err);
+        ESP_LOGE(TAG, "Failed to add I2C device 0x%02x: %s", BARO_I2C_ADDRESS, esp_err_to_name(err));
         return;
     }
 }
+
 void sd_init(void){
     sdmmc_mount_config_t sd_mount_config = {
         .format_if_mount_failed = true,
