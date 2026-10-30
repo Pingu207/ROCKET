@@ -66,33 +66,35 @@ void pyro_init(void){
 };
 
 void imu_init(void){
-    spi_bus_configs[0] = {
+    spi_bus_config_t imu_bus_config = {
         .miso_io_num = MISO_PIN,
         .mosi_io_num = MOSI_PIN,
         .sclk_io_num = SCLK_PIN,
         .quadwp_io_num = -1,
         .quadhd_io_num = -1,
         .max_transfer_sz = 32
-    }
-     err = spi_bus_initialize(SPI2_HOST, &spi_bus_configs[0], SPI_DMA_CH_AUTO);
-     if(err != ESP_OK){
-        ESP_LOGE(TAG, "Failed to initialize SPI bus: %d", err);
+    };
+    err = spi_bus_initialize(SPI2_HOST, &imu_bus_config, SPI_DMA_CH_AUTO);
+    if(err != ESP_OK){
+        ESP_LOGE(TAG, "Failed to initialize IMU SPI bus: %s", esp_err_to_name(err));
         return;
     }
-    imu_device_config = {
+
+    spi_device_interface_config_t imu_device_config = {
         .clock_speed_hz = 10 * 1000 * 1000,
         .mode = 3,
         .spics_io_num = CS_PIN,
         .queue_size = 7
-    }
-    err = spi_bus_add_device(SPI2_HOST, &imu_device_config, &spi_device_handle);
+    };
+    err = spi_bus_add_device(SPI2_HOST, &imu_device_config, &imu_handle);
     if(err != ESP_OK){
-        ESP_LOGE(TAG, "Failed to add SPI device: %d", err);
+        ESP_LOGE(TAG, "Failed to add IMU SPI device: %s", esp_err_to_name(err));
         return;
     }
 }
+
 void baro_init(void){
-    baro_device_config = {
+    i2c_master_bus_config_t baro_device_config = {
         .i2c_port = -1,
         .sda_io_num = SDA_PIN,
         .scl_io_num = SCL_PIN,
@@ -106,7 +108,7 @@ void baro_init(void){
         ESP_LOGE(TAG, "Failed to initialize I2C bus: %d", err);
         return;
     }
-    baro_device_config = {
+    i2c_master_dev_config_t baro_device_config = {
         .dev_addr_length = I2C_ADDR_BIT_LEN_7,
         .device_address = BARO_I2C_ADDRESS,
         .scl_speed_hz = 400 * 1000
@@ -118,7 +120,7 @@ void baro_init(void){
     }
 }
 void sd_init(void){
-    sd_mount_config = {
+    sdmmc_mount_config_t sd_mount_config = {
         .format_if_mount_failed = true,
         .max_files = 4,
         .allocation_unit_size = 4096
@@ -126,7 +128,7 @@ void sd_init(void){
 
     ESP_LOGI(TAG, "Initializing SD Card");
 
-    spi_bus_configs[1] = {
+    spi_bus_config_t spi_bus_configs[1] = {
         .mosi_io_num = SD_MOSI_PIN,
         .miso_io_num = SD_MISO_PIN,
         .sclk_io_num = SD_SCLK_PIN,
