@@ -156,52 +156,50 @@ void sd_init(void){
         return;
     }
 }
+
 void servo_init(void){
-    ledc_timer_config = {
+    ledc_timer_config_t servo_timer_config = {
         .speed_mode = LEDC_LOW_SPEED_MODE,
         .duty_resolution = LEDC_TIMER_14_BIT,
         .timer_num = LEDC_TIMER_0,
         .freq_hz = 50,
         .clk_cfg = LEDC_AUTO_CLK
     };
-
-    err = ledc_timer_config(&ledc_timer_config);
+    err = ledc_timer_config(&servo_timer_config);
     if(err != ESP_OK){
-        ESP_LOGE(TAG, "Failed to configure LEDC timer: %d", err);
+        ESP_LOGE(TAG, "Failed to configure LEDC timer: %s", esp_err_to_name(err));
         return;
     }
 
-    ledc_channel_configs[0] = {
+    ledc_channel_config_t pitch_channel_config = {
         .gpio_num = SERVO_PITCH_PIN,
         .speed_mode = LEDC_LOW_SPEED_MODE,
         .channel = LEDC_CHANNEL_0,
         .timer_sel = LEDC_TIMER_0,
-        .duty = 0,
+        .duty = SERVO_CENTER_DUTY,
         .hpoint = 0
     };
-
-    err = ledc_channel_config(&ledc_channel_configs[0]);
+    err = ledc_channel_config(&pitch_channel_config);
     if(err != ESP_OK){
-        ESP_LOGE(TAG, "Failed to configure LEDC channel for pitch servo: %d", err);
+        ESP_LOGE(TAG, "Failed to configure LEDC channel for pitch servo: %s", esp_err_to_name(err));
         return;
     }
 
-    ledc_channel_configs[1] = {
+    ledc_channel_config_t yaw_channel_config = {
         .gpio_num = SERVO_YAW_PIN,
         .speed_mode = LEDC_LOW_SPEED_MODE,
         .channel = LEDC_CHANNEL_1,
         .timer_sel = LEDC_TIMER_0,
-        .duty = 0,
+        .duty = SERVO_CENTER_DUTY,
         .hpoint = 0
     };
-
-    err = ledc_channel_config(&ledc_channel_configs[1]);
+    err = ledc_channel_config(&yaw_channel_config);
     if(err != ESP_OK){
-        ESP_LOGE(TAG, "Failed to configure LEDC channel for yaw servo: %d", err);
+        ESP_LOGE(TAG, "Failed to configure LEDC channel for yaw servo: %s", esp_err_to_name(err));
         return;
     }
-
 }
+
 void app_main(void){
     pyro_init(); // must be first(!!)
     imu_init();
