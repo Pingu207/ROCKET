@@ -3,7 +3,11 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "driver/gpio.h"
+#include "driver/sdspi_host.h"
+#include "driver/spi_common.h"
 #include "esp_log.h"
+#include "esp_vfs_fat.h"
+#include "sdmmc_cmd.h"
 
 // pins
 // general pins
@@ -98,7 +102,24 @@ void baro_init(void){
         ESP_LOGE(TAG, "Failed to add I2C device: 0x%02x, %d", BARO_I2C_ADDRESS, err_i2c_device);
     }
 }
-void sd_init(void);
+void sd_init(void){
+    spi_bus_config_t spisdcfg{
+        .mosi_io_num = SD_MOSI_PIN,
+        .miso_io_num = SD_MISO_PIN,
+        .sclk_io_num = SD_SCLK_PIN,
+        .quadwp_io_num = -1,
+        .quadhd_io_num = -1,
+        .max_transfer_sz = 4000
+    };
+
+    esp_err_t err_spi_bus = spi_bus_initialize(SPI2_HOST, &spisdcfg, SPI_DMA_CH_AUTO);
+    if(err_spi_bus != ESP_OK){
+        ESP_LOGE(TAG, "Failed to initialize SPI bus for SD card: %d", err_spi_bus);
+    }
+
+    esp_vfs_fat_
+
+}
 void servo_init(void){
     ledc_timer_config_t ledc_timer = {
         .speed_mode = LEDC_LOW_SPEED_MODE,
@@ -143,12 +164,12 @@ void servo_init(void){
 
 }
 void app_main(void){
-    // todo: implement these
     pyro_init(); // must be first(!!)
     imu_init();
     baro_init();
     sd_init();
     servo_init();
+    ESP_LOGI(TAG, "All subsystems initialized.");
     
 
 
