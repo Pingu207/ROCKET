@@ -45,11 +45,11 @@ Simulated the rocket's altitude, velocity, and acceleration profile:
 Full build log with photos and hours logged: 
 [Stardance project page](https://stardance.hackclub.com/projects/45265)
 
-<img width="922" height="546" alt="image" src="https://github.com/user-attachments/assets/6ae20f56-4b06-4eb5-b0a6-5ce257dd808a" /> 
+<img width="542" height="596" alt="image" src="https://github.com/user-attachments/assets/94e69dc1-3ef0-4c56-bed4-c1dc5359b48d" />
 
 (The mount inside the rocket to hold the PCB on impact)
 
-<img width="153" height="746" alt="image" src="https://github.com/user-attachments/assets/1362f015-59ad-42fb-94ed-234c260aa188" /> 
+<img width="156" height="712" alt="image" src="https://github.com/user-attachments/assets/cb0b7689-b48e-4d48-8600-57ff5785bff7" />
 
 (An exploded CAD design of all the components inside the rocket)
 
