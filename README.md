@@ -69,4 +69,6 @@ Full build log with photos and hours logged:
 
 (This is the schematic of the PCB with everything routed)
 
+<img width="595" height="595" alt="image" src="https://github.com/user-attachments/assets/bc07dfb8-57a6-4ed2-ba2f-fc42d30ec294" />
 
+(This is an image of the inside of the rocket and how its layout is)
