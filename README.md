@@ -72,3 +72,7 @@ Full build log with photos and hours logged:
 <img width="595" height="595" alt="image" src="https://github.com/user-attachments/assets/bc07dfb8-57a6-4ed2-ba2f-fc42d30ec294" />
 
 (This is an image of the inside of the rocket and how its layout is)
+
+<img width="560" height="612" alt="image" src="https://github.com/user-attachments/assets/baf7fca8-978a-4773-9a71-9f70321b95ba" />
+
+(This is a photo of the rocket from the bottom)
