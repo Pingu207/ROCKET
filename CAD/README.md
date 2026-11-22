@@ -2,6 +2,9 @@
 
 CAD files for my thrust vector control (TVC) model rocket, designed in PA.
 
+(Onshape link to assembly and part studios):
+https://cad.onshape.com/documents/4e734df613e4a04e9c0ded7b/w/1ffe06ac1ac29d91b5d1b954/e/3c6b55d9667af2a1f6388aee 
+
 ## What is this?
 
 This is the 3D model of my rocket. TVC means the motor can tilt (called gimbaling) to steer the rocket while it flies, kind of like balancing a broom on your hand. A flight computer reads the sensors and tells the motor mount which way to tilt.
